@@ -62,14 +62,14 @@ def get_authors():
 @app.route('/Author/<id>', methods=['GET'])
 def get_Author(id):
     # Get Single Author
-    Author = Author.query.get(id)
-    return Author_schema.jsonify(Author)
+    author = Author.query.get(id)
+    return Author_schema.jsonify(author)
 
 
 @app.route('/Author/<id>', methods=['PUT'])
 def update_Author(id):
     # Update a Author
-    Author = Author.query.get(id)
+    author = Author.query.get(id)
     id = request.json['id']
     a_name = request.json['a_name']
 
@@ -77,17 +77,17 @@ def update_Author(id):
     Author.a_name = a_name
     db.session.commit()
 
-    return Author_schema.jsonify(Author)
+    return Author_schema.jsonify(author)
 
 
 @app.route('/Author/<id>', methods=['DELETE'])
 def delete_Author(id):
     # Delete Author
-    Author = Author.query.get(id)
-    db.session.delete(Author)
+    author = Author.query.get(id)
+    db.session.delete(author)
     db.session.commit()
 
-    return Author_schema.jsonify(Author)
+    return Author_schema.jsonify(author)
 
 
 # Book Class
@@ -100,7 +100,7 @@ class Book(db.Model):
     Publisher = db.Column(db.String(255))
     Number_pages = db.Column(db.Integer)
 
-    def __init__(self, id, a_name):
+    def __init__(self, idbook, title, year, descriptionBook, publisher, pages):
         self.ISBN = idbook
         self.Title = title
         self.Year = year 
@@ -142,17 +142,17 @@ def get_books():
     return books_schema.jsonify(all_books)
 
 
-@app.route('/Book/<id>', methods=['GET'])
+@app.route('/Book/<idbook>', methods=['GET'])
 def get_Book(idbook):
     # Get Single Book
-    Book = Book.query.get(idbook)
-    return Book_schema.jsonify(Book)
+    book = Book.query.get(idbook)
+    return Book_schema.jsonify(book)
 
 
-@app.route('/Book/<id>', methods=['PUT'])
+@app.route('/Book/<idbook>', methods=['PUT'])
 def update_Book(idbook):
     # Update a Book
-    Book = Book.query.get(idbook)
+    book = Book.query.get(idbook)
     idbook = request.json['idbook']
     title = request.json['title']
     year = request.json['year']
@@ -168,17 +168,17 @@ def update_Book(idbook):
     Book.pages = pages
     db.session.commit()
 
-    return Book_schema.jsonify(Book)
+    return Book_schema.jsonify(book)
 
 
-@app.route('/Book/<id>', methods=['DELETE'])
+@app.route('/Book/<idbook>', methods=['DELETE'])
 def delete_Book(idbook):
     # Delete Book
-    Book = Book.query.get(idbook)
-    db.session.delete(Book)
+    book = Book.query.get(idbook)
+    db.session.delete(book)
     db.session.commit()
 
-    return Book_schema.jsonify(Book)
+    return Book_schema.jsonify(book)
 
 
 # Author_Book Class
@@ -221,35 +221,35 @@ def get_authorsBook():
     return authorsBook_schema.jsonify(all_authorsBook)
 
 
-@app.route('/AuthorBook/<id>', methods=['GET'])
+@app.route('/AuthorBook/<idb>', methods=['GET'])
 def get_AuthorBook(idb):
     # Get Single AuthorBook
-    AuthorBook = AuthorBook.query.get(idb)
-    return AuthorBook_schema.jsonify(AuthorBook)
+    authorBook = AuthorBook.query.get(idb)
+    return AuthorBook_schema.jsonify(authorBook)
 
 
-@app.route('/AuthorBook/<id>', methods=['PUT'])
+@app.route('/AuthorBook/<idb>', methods=['PUT'])
 def update_AuthorBook(idb):
     # Update a Author
-    AuthorBook = AuthorBook.query.get(idb)
+    authorBook = AuthorBook.query.get(idb)
     idb = request.json['idb']
     isbn = request.json['isbn']
 
     AuthorBook.Author_ID = idb
     AuthorBook.isbn = isbn
-    dbb.session.commit()
-
-    return AuthorBook_schema.jsonify(AuthorBook)
-
-
-@app.route('/AuthorBook/<id>', methods=['DELETE'])
-def delete_AuthorBook(idb):
-    # Delete AuthorBook
-    AuthorBook = AuthorBook.query.get(idb)
-    db.session.delete(AuthorBook)
     db.session.commit()
 
-    return AuthorBook_schema.jsonify(AuthorBook)
+    return AuthorBook_schema.jsonify(authorBook)
+
+
+@app.route('/AuthorBook/<idb>', methods=['DELETE'])
+def delete_AuthorBook(idb):
+    # Delete AuthorBook
+    authorBook = AuthorBook.query.get(idb)
+    db.session.delete(authorBook)
+    db.session.commit()
+
+    return AuthorBook_schema.jsonify(authorBook)
 
 
 
@@ -364,14 +364,14 @@ def get_bookcategories():
     return bookcategories_schema.jsonify(all_bookcategories)
 
 
-@app.route('/BookCategory/<id>', methods=['GET'])
+@app.route('/BookCategory/<idbc>', methods=['GET'])
 def get_bookcategory(idbc):
     # Get Single bookcategory
     bookcategory = BookCategory.query.get(idbc)
     return bookcategory_schema.jsonify(bookcategory)
 
 
-@app.route('/BookCategory/<id>', methods=['PUT'])
+@app.route('/BookCategory/<idbc>', methods=['PUT'])
 def update_bookcategory(idbc):
     # Update a bookcategory
     bookcategory = BookCategory.query.get(idbc)
@@ -385,7 +385,7 @@ def update_bookcategory(idbc):
     return bookcategory_schema.jsonify(bookcategory)
 
 
-@app.route('/BookCategory/<id>', methods=['DELETE'])
+@app.route('/BookCategory/<idbc>', methods=['DELETE'])
 def delete_bookcategory(idbc):
     # Delete bookcategory
     bookcategory = BookCategory.query.get(idbc)
@@ -437,10 +437,10 @@ def add_Borrower():
     isbn = request.json['isbn']
 
     new_borrower = Borrower(b_id, bfName, blName, city, email, pnumber, isbn)
-    db.session.add(new_Borrower)
+    db.session.add(new_borrower)
     db.session.commit()
 
-    return Borrower_schema.jsonify(new_Borrower)
+    return Borrower_schema.jsonify(new_borrower)
 
 
 @app.route('/Borrower', methods=['GET'])
@@ -450,14 +450,14 @@ def get_borrowers():
     return borrowers_schema.jsonify(all_borrowers)
 
 
-@app.route('/Borrower/<id>', methods=['GET'])
+@app.route('/Borrower/<b_id>', methods=['GET'])
 def get_Borrower(b_id):
     # Get Single Borrower
     borrower = Borrower.query.get(b_id)
     return Borrower_schema.jsonify(borrower)
 
 
-@app.route('/Borrower/<id>', methods=['PUT'])
+@app.route('/Borrower/<b_id>', methods=['PUT'])
 def update_Borrower(b_id):
     # Update a Borrower
     borrower = Borrower.query.get(b_id)
@@ -481,7 +481,7 @@ def update_Borrower(b_id):
     return Borrower_schema.jsonify(borrower)
 
 
-@app.route('/Borrower/<id>', methods=['DELETE'])
+@app.route('/Borrower/<b_id>', methods=['DELETE'])
 def delete_Borrower(b_id):
     # Delete Borrower
     borrower = Borrower.query.get(b_id)
@@ -534,10 +534,10 @@ def add_Lender():
     isbn = request.json['isbn']
 
     new_lender = Lender(l_id, lfName, llName, city, email, pnumber, isbn)
-    db.session.add(new_Lender)
+    db.session.add(new_lender)
     db.session.commit()
 
-    return Lender_schema.jsonify(new_Lender)
+    return Lender_schema.jsonify(new_lender)
 
 
 @app.route('/Lender', methods=['GET'])
@@ -547,14 +547,14 @@ def get_lenders():
     return lenders_schema.jsonify(all_lenders)
 
 
-@app.route('/Lender/<id>', methods=['GET'])
+@app.route('/Lender/<l_id>', methods=['GET'])
 def get_Lender(l_id):
     # Get Single Lender
     lender = Lender.query.get(l_id)
     return Lender_schema.jsonify(lender)
 
 
-@app.route('/Lender/<id>', methods=['PUT'])
+@app.route('/Lender/<l_id>', methods=['PUT'])
 def update_Lender(l_id):
     # Update a Lender
     lender = Lender.query.get(l_id)
@@ -578,7 +578,7 @@ def update_Lender(l_id):
     return Lender_schema.jsonify(lender)
 
 
-@app.route('/Lender/<id>', methods=['DELETE'])
+@app.route('/Lender/<l_id>', methods=['DELETE'])
 def delete_Lender(l_id):
     # Delete Lender
     lender = Lender.query.get(l_id)
